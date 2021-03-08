@@ -30,6 +30,24 @@ app = Flask(__name__)
 #    return clean_tokens
 
 def tokenize(text):
+    """
+    Applies tokenization logic to message.
+       - Converts all words to lower-case
+       - Removes any punctuation
+       - Removes any stop words
+       - Converts words to lemmatized root
+
+    Parameters
+    ----------
+    text : str
+        Character string containing words to be tokenized.
+
+    Returns
+    -------
+    tokens : list
+        List of tokenized words.
+
+    """
     stop_words = stopwords.words("english")
     lemmatizer = WordNetLemmatizer()
 
@@ -48,6 +66,24 @@ def tokenize(text):
     return tokens
 
 def tokenize_keep_punctuation(text):
+    """
+    Applies tokenization logic to message.
+       - Converts all words to lower-case
+       - Does NOT remove any punctuation
+       - Removes any stop words
+       - Converts words to lemmatized root
+
+    Parameters
+    ----------
+    text : str
+        Character string containing words to be tokenized.
+
+    Returns
+    -------
+    tokens : list
+        List of tokenized words.
+
+    """
     stop_words = stopwords.words("english")
     lemmatizer = WordNetLemmatizer()
 

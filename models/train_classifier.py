@@ -26,6 +26,25 @@ import pickle
 
 
 def load_data(database_filepath):
+    """
+    Access database located at provided path and extracts attributes and
+       target variables
+
+    Parameters
+    ----------
+    database_filepath : str
+        Database location.
+
+    Returns
+    -------
+    X : numpy.ndarray
+        Attributes of the training data.
+    Y : numpy.ndarray
+        Multilabel target variables of training data.
+    Y_columns : pandas.Index
+        Index of the multilabel column names.
+
+    """
     engine = create_engine('sqlite:///' + database_filepath)
     df = pd.read_sql_table('DisasterMessages', con=engine)
     X = df['message'].values
@@ -37,6 +56,24 @@ def load_data(database_filepath):
 
 
 def tokenize(text):
+    """
+    Applies tokenization logic to message.
+       - Converts all words to lower-case
+       - Removes any punctuation
+       - Removes any stop words
+       - Converts words to lemmatized root
+
+    Parameters
+    ----------
+    text : str
+        Character string containing words to be tokenized.
+
+    Returns
+    -------
+    tokens : list
+        List of tokenized words.
+
+    """
     stop_words = stopwords.words("english")
     lemmatizer = WordNetLemmatizer()
 
@@ -55,6 +92,24 @@ def tokenize(text):
     return tokens
 
 def tokenize_keep_punctuation(text):
+    """
+    Applies tokenization logic to message.
+       - Converts all words to lower-case
+       - Does NOT remove any punctuation
+       - Removes any stop words
+       - Converts words to lemmatized root
+
+    Parameters
+    ----------
+    text : str
+        Character string containing words to be tokenized.
+
+    Returns
+    -------
+    tokens : list
+        List of tokenized words.
+
+    """
     stop_words = stopwords.words("english")
     lemmatizer = WordNetLemmatizer()
 
@@ -73,6 +128,20 @@ def tokenize_keep_punctuation(text):
     return tokens
 
 def build_model():
+    """
+    Builds Multi Output classifier 
+    
+    Parameters
+    -------
+    None.
+
+    
+    Returns
+    -------
+    cv : sklearn.model_selection.GridSearchCV
+        scikit-learn model based on defined pipeline and available parameters
+        
+    """
     
     pipeline = Pipeline([
         ('vect', CountVectorizer()),
@@ -95,6 +164,30 @@ def build_model():
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
+    """
+    Creates predictions based on test data, displays the optimal parameters
+       of the model, and displays the scores for each output label
+    
+    
+    Parameters
+    ----------
+    model : sklearn.model_selection.GridSearchCV
+        Trained machine learning model
+    
+    X_test : numpy.ndarray
+        Test data attributes
+        
+    Y_test : numpy.ndarray
+        Test data target variables
+        
+    category_names : list
+        List of multi output variable target names
+
+    Returns
+    -------
+    None
+    
+    """
     
     # predict model outcomes
     Y_pred = model.predict(X_test)
@@ -109,6 +202,22 @@ def evaluate_model(model, X_test, Y_test, category_names):
     
 
 def save_model(model, model_filepath):
+    """
+    Serializes the machine learning model to a pickle file
+    
+    Parameters
+    ----------
+    model : sklearn.model_selection.GridSearchCV
+        Trained machine learning model
+        
+    model_filepath : str
+        File location of the saved model
+        
+    Returns
+    -------
+    None
+    
+    """
     
     pickle.dump(model, open(model_filepath, 'wb'))
 

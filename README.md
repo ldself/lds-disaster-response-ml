@@ -32,6 +32,9 @@ Optimal parameters determined by the grid search are currently:
 
 Obviously, other combinations and models can be attempted.  Feel free to modify the code to try something else.
 
+## Interaction
+The program is launched from a terminal by executing 'python run.py' from the app folder.
+
 ## Licensing, Authors, Ackwledgements, etc.
 I would like to acknowledge the Udacity Data Science nanodegree program for the inspration and tools provided to create this project.
 
